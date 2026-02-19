@@ -1,0 +1,1 @@
+export { default as AdministratorSearchView } from './administrator-search-view';

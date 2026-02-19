@@ -1,0 +1,153 @@
+{
+  "dashboard": {},
+  "action": "ดำเนินการ",
+  "active": "เปิดใช้งาน",
+  "inactive": "ปิดใช้งาน",
+  "search": "ค้นหา",
+  "lastUpdateDtm": "แก้ไขล่าสุด",
+  "lastUpdateBy": "แก้ไขโดย",
+  "statusDesc": "สถานะ",
+  "validation": {
+    "fileSize" : "ขนาดไฟล์ต้องไม่เกิน "
+  },
+  "customer": {
+    "customerSearch": {
+      "title": "ข้อมูลลูกค้า",
+      "subTitle": "ลูกค้า",
+      "search": "ค้นหา",
+      "add": "เพิ่มลูกค้า",
+      "customerCode": "รหัสลูกค้า",
+      "customerName": "ลูกค้า",
+      "customerNumber": "ทะเบียนนิติบุคคล",
+      "customerStatus": "สถานะลูกค้า",
+      "branchName": "สาขา",
+      "customerType": "ประเภท",
+      "contactTel": "เบอร์โทรศัพท์",
+      "lastUpdateDtm": "แก้ไขล่าสุด",
+      "lastUpdateBy": "แก้ไขโดย"
+    }
+  },
+  "template": {
+    "templateSearch": {
+      "title": "ข้อมููล Template",
+      "subTitle": "ค้นหา Template",
+      "add": "เพิ่ม Template",
+      "templateCode": "รหัส Template",
+      "customerCode": "รหัสลูกค้า",
+      "templateName": "ชื่อ Template",
+      "templateType": "ประเภท Template",
+      "templateStatus": "สถานะ Template",
+      "documentType": "รูปแบบเอกสาร",
+      "fileName": "ชื่อไฟล์",
+      "lastUpdateDtm": "นำเข้าโดย",
+      "lastUpdateBy": "นำเข้าข้อมูลวันที่ "
+    }
+  },
+  "ticket": {
+    "ticketSearch": {
+      "title": "แจ้งปัญหาการใช้งาน",
+      "subTitle": "ค้นหา",
+      "search": "ค้นหารายการแจ้งปัญหา",
+      "add": "แจ้งปัญหา",
+      "priority": "ความสำคัญ",
+      "ticketRequestNo": "หมายเลขคำขอ",
+      "ticketSubject": "หัวข้อการแจ้งปัญหา",
+      "createDtm": "สร้างเมื่อ",
+      "lastUpdateDtm": "แก้ไขล่าสุด",
+      "requestName": "สร้างโดย",
+      "actionType": "ประเภทผู้ส่งคำขอ",
+      "status": "สถานะลูกค้า"
+    }
+  },
+  "administrater": {
+    "administraterSearch": {
+      "title": "ข้อมูลผู้ดูแลระบบ",
+      "subTitle": "ค้นหา",
+      "search": "ค้นหาผู้ดูแลระบบ",
+      "add": "เพิ่ม ผู้ดูแลระบบ",
+      "adminCode": "รหัสผู้ดูแลระบบ",
+      "fullName": "ชื่อนาม-สกุล",
+      "email": "อีเมล",
+      "tel": "เบอร์โทรศัพท์",
+      "status": "สถานะ"
+    }
+  },
+  "import": {
+    "importData": {
+      "title": "นำข้อมูลเข้า",
+      "subTitleEtax": "นำข้อมูลเข้าแบบ E-TAX",
+      "subTitleEdoc": "นำข้อมูลเข้าแบบ E-DOCUMENT",
+      "cusotmerName": "ชื่อบริษัท",
+      "customerNumber": "เลขนิติบุคคล",
+      "branchCode": "รหัสสาขา",
+      "status": "สถานะ",
+      "uploadDate": "วันที่เริ่มอัพโหลด",
+      "uploadDateTo": "ถึง"
+    }
+  },
+  "masterData": {
+    "province": {
+      "title": "จังหวัด",
+      "search": "ค้นหาจังหวัด",
+      "provinceCode": "รหัสจังหวัด",
+      "provinceName": "ชื่อจังหวัด",
+      "provinceNameTh": "ชื่อจังหวัด ภาษาไทย",
+      "provinceNameEn": "ชื่อจังหวัด ภาษาอังกฤษ",
+      "status": "สถานะ",
+      "add": "เพิ่ม จังหวัด"
+    },
+    "district": {
+      "title": "เขต/อำเภอ",
+      "search": "ค้นหาเขต/อำเภอ",
+      "districtCode": "รหัสเขต/อำเภอ",
+      "districtName": "ชื่อ เขต/อำเภอ",
+      "districtNameTh": "ชื่อเขต/อำเภอ ภาษาไทย",
+      "districtNameEn": "ชื่อเขต/อำเภอ ภาษาอังกฤษ",
+      "status": "สถานะ",
+      "add": "เพิ่ม จังหวัด"
+    },
+    "subDistrict": {
+      "title": "แขวง/ตำบล",
+      "search": "ค้นหาแขวง/ตำบล",
+      "subDistrictCode": "รหัสแขวง/ตำบล",
+      "subDistrictName": "ชื่อแขวง/ตำบล",
+      "subDistrictNameTh": "ชื่อแขวง/ตำบล ภาษาไทย",
+      "subDistrictNameEn": "ชื่อแขวง/ตำบล ภาษาอังกฤษ",
+      "zipCode": "รหัสไปรษณีย์",
+      "status": "สถานะ",
+      "add": "เพิ่ม แขวง/ตำบล"
+    },
+    "configGroup": {
+      "title": "Config Group",
+      "search": "ค้นหา Config Group",
+      "configGroupType": "Config group type",
+      "add": "เพิ่ม Config group"
+    }
+  },
+  "pdfTemplate": {
+    "pdfTemplateSearch": {
+      "title": "PDF Template",
+      "name": "ชื่อ PDF Template",
+      "subTitle": "ค้นหา PDF Template",
+      "add": "เพิ่ม Config Template",
+      "templateCode": "ชื่อ PDF Template",
+      "customerCode": "รหัสลูกค้า",
+      "templateType": "ประเภท Template",
+      "documentType": "รูปแบบเอกสาร",
+      "status": "สถานะ"
+    }
+  },
+  "dirtectData": {
+    "dirtectDataSearch": {
+      "title": "นำเข้าข้อมูลแบบกรอกฟอร์ม",
+      "name": "ชื่อ PDF Template",
+      "subTitle": "ค้นหา นำเข้าข้อมูลแบบกรอกฟอร์ม",
+      "add": "นำเข้าข้อมูล",
+      "templateCode": "ชื่อ PDF Template",
+      "customerCode": "รหัสลูกค้า",
+      "templateType": "ประเภท Template",
+      "documentType": "รูปแบบเอกสาร",
+      "status": "สถานะ"
+    }
+  }
+}

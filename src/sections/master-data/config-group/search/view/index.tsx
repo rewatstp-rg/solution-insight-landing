@@ -1,0 +1,1 @@
+export { default as ConfigGroupSearchView } from './config-group-search-view';

@@ -1,0 +1,1 @@
+export { default as  EmailTransactionFormView } from './email-transaction-form-view';
