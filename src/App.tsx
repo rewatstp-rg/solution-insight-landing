@@ -55,9 +55,6 @@ function App() {
       localStorage.clear();
       localStorage.setItem('version', packageJson.version);
     }
-
-    // console.log("🚀 ~ file: App.tsx:39 ~ caching else  ~ version:", version)
-    // console.log("🚀 ~ file: App.tsx:39 ~ caching else ~  packageJson.version:", packageJson.version)
   };
 
   useEffect(() => {
