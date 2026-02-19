@@ -37,18 +37,12 @@ function App() {
   const caching = () => {
     const version = localStorage.getItem('version');
     if (version !== packageJson.version) {
-      // console.log("🚀 ~ file: App.tsx:39 ~ caching ~ version:", version)
-      // console.log("🚀 ~ file: App.tsx:39 ~ caching ~  packageJson.version:", packageJson.version)
       if ('caches' in window) {
         caches.keys().then((names) => {
-          // console.log("🚀 ~ file: App.tsx:43 ~ caches.keys ~ names:", names)
-          // Delete all the cache files
           names.forEach(name => {
             caches.delete(name);
           })
         });
-
-        // Makes sure the page reloads. Changes are only visible after you refresh.
         window.location.reload();
       }
 
