@@ -16,6 +16,8 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 
+const MotionIconButton = m(IconButton);
+
 export default function ContactsPopover() {
   const popover = usePopover();
 
@@ -23,8 +25,7 @@ export default function ContactsPopover() {
 
   return (
     <>
-      <IconButton
-        component={m.button}
+      <MotionIconButton
         whileTap="tap"
         whileHover="hover"
         variants={varHover(1.05)}
@@ -37,7 +38,7 @@ export default function ContactsPopover() {
         }}
       >
         <Iconify icon="solar:users-group-rounded-bold-duotone" width={24} />
-      </IconButton>
+      </MotionIconButton>
 
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 320 }}>
         <Typography variant="h6" sx={{ p: 1.5 }}>

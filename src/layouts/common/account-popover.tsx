@@ -1,4 +1,3 @@
-/* eslint-disable perfectionist/sort-imports */
 import { m } from 'framer-motion';
 
 import Box from '@mui/material/Box';
@@ -10,19 +9,22 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-// import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
-import { useAuthContext } from 'src/auth/hooks';
+
 import { getStorage } from 'src/hooks/use-local-storage';
 
 import { STORAGE_KEYS } from 'src/utils/constants';
 import { getPathImageByfile64 } from 'src/utils/getPathImageByfile64';
 
+import { _mock } from 'src/_mock';
+import { useAuthContext } from 'src/auth/hooks';
+
 import { varHover } from 'src/components/animate';
 import { useSnackbar } from 'src/components/snackbar';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
-import { _mock } from 'src/_mock';
+
+const MotionIconButton = m(IconButton);
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +32,7 @@ export default function AccountPopover() {
   const router = useRouter();
 
   const key = STORAGE_KEYS.USER_INFO;
-  const userProfile : any  = getStorage(key);
+  const userProfile: any = getStorage(key);
 
   const { logout } = useAuthContext();
 
@@ -62,7 +64,7 @@ export default function AccountPopover() {
       console.error(error);
       enqueueSnackbar('Unable to logout!', { variant: 'error' });
     }
-   
+
   };
 
   const handleClickItem = (path: string) => {
@@ -72,8 +74,7 @@ export default function AccountPopover() {
 
   return (
     <>
-      <IconButton
-        component={m.button}
+      <MotionIconButton
         whileTap="tap"
         whileHover="hover"
         variants={varHover(1.05)}
@@ -99,7 +100,7 @@ export default function AccountPopover() {
         >
           {userProfile?.fullName?.charAt(0).toUpperCase()}
         </Avatar>
-      </IconButton>
+      </MotionIconButton>
 
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 200, p: 0 }}>
         <Box sx={{ p: 2, pb: 1.5 }}>

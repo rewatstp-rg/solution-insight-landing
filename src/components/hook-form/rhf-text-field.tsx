@@ -158,7 +158,7 @@ const InputField = memo(({ field, label, size, type = 'text', inputType, onlyNum
   // console.log("🚀 ~ InputField ~ type:", type)
   console.log("🚀 ~ error: InputField", error)
 
-  const ref: any = useRef<HTMLDivElement>();
+  const ref: any = useRef<HTMLDivElement>(null);
   const [localValue, setLocalValue] = useState<any>(field.value);
   // console.log("🚀 ~ InputField ~ localValue:", localValue)
   const debouncedQuery = useDebounce(localValue, isDebouncedQuery ? 500 : 0);

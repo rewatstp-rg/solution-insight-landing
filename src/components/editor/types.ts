@@ -1,4 +1,4 @@
-import type { Editor, Extension, EditorOptions } from '@tiptap/react';
+import type { Editor, EditorOptions, NodeViewProps } from '@tiptap/react';
 
 import type { Theme, SxProps } from '@mui/material/styles';
 
@@ -37,11 +37,9 @@ export type EditorToolbarItemProps = {
 };
 
 export type EditorCodeHighlightBlockProps = {
-  extension: Extension;
-  updateAttributes: (attributes: Record<string, any>) => void;
   node: {
-    attrs: {
-      language: string;
+    attrs: NodeViewProps['node']['attrs'] & {
+      language?: string;
     };
   };
-};
+} & NodeViewProps;

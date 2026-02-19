@@ -9,6 +9,8 @@ import Iconify from 'src/components/iconify';
 import { varHover } from 'src/components/animate';
 import { useSettingsContext } from 'src/components/settings';
 
+const MotionIconButton = m(IconButton);
+
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -42,8 +44,7 @@ export default function SettingsButton({ sx }: Props) {
           repeat: Infinity,
         }}
       >
-        <IconButton
-          component={m.button}
+        <MotionIconButton
           whileTap="tap"
           whileHover="hover"
           variants={varHover(1.05)}
@@ -55,7 +56,7 @@ export default function SettingsButton({ sx }: Props) {
           }}
         >
           <Iconify icon="solar:settings-bold-duotone" width={24} />
-        </IconButton>
+        </MotionIconButton>
       </Box>
     </Badge>
   );

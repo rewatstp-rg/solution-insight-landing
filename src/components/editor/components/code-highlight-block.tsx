@@ -9,7 +9,7 @@ import type { EditorCodeHighlightBlockProps } from '../types';
 
 export function CodeHighlightBlock({
   node: {
-    attrs: { language: defaultLanguage },
+    attrs: { language: defaultLanguage = 'null' },
   },
   extension,
   updateAttributes,

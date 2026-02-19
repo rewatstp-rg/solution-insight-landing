@@ -10,6 +10,8 @@ import Iconify from 'src/components/iconify';
 import { varHover } from 'src/components/animate';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
+const MotionIconButton = m(IconButton);
+
 // ----------------------------------------------------------------------
 
 export default function LanguagePopover() {
@@ -29,8 +31,7 @@ export default function LanguagePopover() {
 
   return (
     <>
-      <IconButton
-        component={m.button}
+      <MotionIconButton
         whileTap="tap"
         whileHover="hover"
         variants={varHover(1.05)}
@@ -44,7 +45,7 @@ export default function LanguagePopover() {
         }}
       >
         <Iconify icon={currentLang.icon} sx={{ borderRadius: 0.65, width: 28 }} />
-      </IconButton>
+      </MotionIconButton>
 
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 160 }}>
         {allLangs.map((option) => (

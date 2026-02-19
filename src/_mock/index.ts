@@ -1,7 +1,4 @@
-export * from './assets';
 export * from './_mock';
-
-// ----------------------------------------------------------------------
-
-export * from './_overview';
+export * from './assets';
 export * from './_others';
+export * from './_overview';

@@ -46,6 +46,8 @@ const TABS = [
   },
 ];
 
+const MotionIconButton = m(IconButton);
+
 // ----------------------------------------------------------------------
 
 export default function NotificationsPopover() {
@@ -136,8 +138,7 @@ export default function NotificationsPopover() {
 
   return (
     <>
-      <IconButton
-        component={m.button}
+      <MotionIconButton
         whileTap="tap"
         whileHover="hover"
         variants={varHover(1.05)}
@@ -147,7 +148,7 @@ export default function NotificationsPopover() {
         <Badge badgeContent={totalUnRead} color="error">
           <Iconify icon="solar:bell-bing-bold-duotone" width={24} />
         </Badge>
-      </IconButton>
+      </MotionIconButton>
 
       <Drawer
         open={drawer.value}

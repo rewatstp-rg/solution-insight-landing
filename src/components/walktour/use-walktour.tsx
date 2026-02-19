@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Step, STATUS, LIFECYCLE, StoreHelpers, CallBackProps } from 'react-joyride';
+import { STATUS, LIFECYCLE, StoreHelpers, CallBackProps } from 'react-joyride';
 
 import WalktourProgressBar from './walktour-progress-bar';
 
@@ -7,7 +7,7 @@ import WalktourProgressBar from './walktour-progress-bar';
 
 type ReturnType = {
   run: boolean;
-  steps: Step[];
+  steps: any[];
   onCallback: (data: CallBackProps) => void;
   setHelpers: (storeHelpers: StoreHelpers) => void;
   setRun: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,11 +16,11 @@ type ReturnType = {
 export type UseWalktourProps = {
   defaultRun?: boolean;
   showProgress?: boolean;
-  steps: Step[];
+  steps: any[];
 };
 
 export function useWalktour(props: UseWalktourProps): ReturnType {
-  const helpers = useRef<StoreHelpers>();
+  const helpers = useRef<StoreHelpers>(null);
 
   const [run, setRun] = useState(!!props?.defaultRun);
 
