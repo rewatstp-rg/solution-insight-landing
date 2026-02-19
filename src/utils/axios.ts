@@ -311,6 +311,12 @@ export const endpoints = {
     updateHotelStatus: 'updateHotelStatus',
     listHotelByEventCodeAndCondition: 'listHotelByEventCodeAndCondition'
   },
+   common: {
+    root: '/api/app/commonController/',
+    uploadImageFrame: 'uploadImageFrame',
+    searchImageFrameByType: 'searchImageFrameByType',
+
+  },
 };
 
 export const endpointsCustomer = {

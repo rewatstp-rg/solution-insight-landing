@@ -33,16 +33,15 @@ type Props = {
     rootKey?: string;
     onEditAddress?: VoidFunction;
     onRedeemCode?: VoidFunction;
+    onResetPassword?: VoidFunction;
+    onInquiryKbank?: VoidFunction;
+    onDownload?: VoidFunction;
+    onUpload?: VoidFunction;
+    onCopyLink?: VoidFunction;
+    onCopyLinkPhotoWithFrame?: VoidFunction;
 };
 
-// ปุ่ม Resend Email
-// ปุ่ม Resend  SMS
-// ปุ่ม Send to print
-// ปุ่ม Download XML
-// ปุ่ม Download PDF
-
-export default function ActionButtonSearch({ onEdit, onInquiry, onDelete, viewType, onResendEmail, onResendSms, onDownloadXml, onDownloadPdf, onSendPrint, loading, selectedAuthMenu, itemKey, rootKey, onEditAddress, onRedeemCode }: Props) {
-    // console.log("🚀 ~ file: action-button-search.tsx:45 ~ ActionButtonSearch ~ selectedAuthMenu:", selectedAuthMenu)
+export default function ActionButtonSearch({ onEdit, onInquiry, onDelete, viewType, onResendEmail, onResendSms, onDownloadXml, onDownloadPdf, onSendPrint, loading, selectedAuthMenu, itemKey, rootKey, onEditAddress, onRedeemCode, onResetPassword, onInquiryKbank, onDownload, onUpload, onCopyLink, onCopyLinkPhotoWithFrame }: Props) {
 
     const isDetail = () => viewType === 'inquiry';
 
@@ -56,6 +55,12 @@ export default function ActionButtonSearch({ onEdit, onInquiry, onDelete, viewTy
     const quickDownloadPdf = useBoolean();
     const quickEditAddress = useBoolean();
     const quickDiscountCode = useBoolean();
+    const quickResetPassword = useBoolean();
+    const quickInquiryKbank = useBoolean();
+    const quickDownload = useBoolean();
+    const quickUpload = useBoolean();
+    const quickCopyLink = useBoolean();
+    const quickCopyLinkPhotoWithFrame = useBoolean();
 
     const theme = useTheme();
 
@@ -110,7 +115,35 @@ export default function ActionButtonSearch({ onEdit, onInquiry, onDelete, viewTy
         quickDiscountCode.onTrue();
     }
 
+    const handleResetPassword = () => {
+        onResetPassword?.();
+        quickResetPassword.onTrue();
+    }
 
+    const handleInquiryKbank = () => {
+        onInquiryKbank?.();
+        quickInquiryKbank.onTrue();
+    }
+
+    const handleDownload = () => {
+        onDownload?.();
+        quickDownload.onTrue();
+    }
+
+    const handleUpload = () => {
+        onUpload?.();
+        quickUpload.onTrue();
+    }
+
+    const handleCopyLink = () => {
+        onCopyLink?.();
+        quickCopyLink.onTrue();
+    }
+
+    const handleCopyLinkPhotoWithFrame = () => {
+        onCopyLinkPhotoWithFrame?.();
+        quickCopyLinkPhotoWithFrame.onTrue();
+    }
 
     return (
         <>
@@ -238,6 +271,97 @@ export default function ActionButtonSearch({ onEdit, onInquiry, onDelete, viewTy
                                 </Tooltip >
                             )
                         }
+                        {
+                            onResetPassword && (
+                                <Tooltip title="Reset Password" placement="top" arrow>
+                                    <IconButton color={quickResetPassword.value ? 'inherit' : 'default'} onClick={handleResetPassword} sx={{ color: theme.palette.primary.main }}>
+                                        {
+                                            loading && rootKey === itemKey && <CircularProgress color="inherit" size={24} />
+                                        }
+                                        {
+                                            (!loading || rootKey !== itemKey) && <Iconify icon="mingcute:key-2-line" />
+                                        }
+                                    </IconButton >
+                                </Tooltip >
+                            )
+                        }
+
+                        {
+                            onInquiryKbank && (
+                                <Tooltip title="Inquiry Kbank" placement="top" arrow>
+                                    <IconButton color={quickInquiryKbank.value ? 'inherit' : 'default'} onClick={handleInquiryKbank} sx={{ color: theme.palette.grey[500] }}>
+                                        {
+                                            loading && rootKey === itemKey && <CircularProgress color="inherit" size={24} />
+                                        }
+                                        {
+                                            (!loading || rootKey !== itemKey) && <Iconify icon="solar:qr-code-line-duotone" />
+                                        }
+                                    </IconButton >
+                                </Tooltip >
+                            )
+                        }
+
+                        {
+                            onDownload && (
+                                <Tooltip title="Download" placement="top" arrow>
+                                    <IconButton color={quickDownload.value ? 'inherit' : 'default'} onClick={handleDownload} sx={{ color: theme.palette.grey[500] }}>
+                                        {
+                                            loading && rootKey === itemKey && <CircularProgress color="inherit" size={24} />
+                                        }
+                                        {
+                                            (!loading || rootKey !== itemKey) && <Iconify icon="solar:download-bold" />
+                                        }
+                                    </IconButton >
+                                </Tooltip >
+                            )
+                        }
+
+                        {
+                            onUpload && (
+                                <Tooltip title="Upload" placement="top" arrow>
+                                    <IconButton color={quickUpload.value ? 'inherit' : 'default'} onClick={handleUpload} sx={{ color: theme.palette.grey[500] }}>
+                                        {
+                                            loading && rootKey === itemKey && <CircularProgress color="inherit" size={24} />
+                                        }
+                                        {
+                                            (!loading || rootKey !== itemKey) && <Iconify icon="iconoir:rotate-camera-right" />
+                                        }
+                                    </IconButton >
+                                </Tooltip >
+                            )
+                        }
+
+                        {
+                            onCopyLink && (
+                                <Tooltip title="Copy Link Photo zip" placement="top" arrow>
+                                    <IconButton color={quickCopyLink.value ? 'inherit' : 'default'} onClick={handleCopyLink} sx={{ color: theme.palette.grey[500] }}>
+                                        {
+                                            loading && rootKey === itemKey && <CircularProgress color="inherit" size={24} />
+                                        }
+                                        {
+                                            (!loading || rootKey !== itemKey) && <Iconify icon="uil:copy" />
+                                        }
+                                    </IconButton >
+                                </Tooltip >
+                            )
+                        }
+
+                        {
+                            onCopyLinkPhotoWithFrame && (
+                                <Tooltip title="Copy Link Photo With Frame zip" placement="top" arrow>
+                                    <IconButton color={quickCopyLinkPhotoWithFrame.value ? 'inherit' : 'default'} onClick={handleCopyLinkPhotoWithFrame} sx={{ color: theme.palette.grey[500] }}>
+                                        {
+                                            loading && rootKey === itemKey && <CircularProgress color="inherit" size={24} />
+                                        }
+                                        {
+                                            (!loading || rootKey !== itemKey) && <Iconify icon="fluent:image-copy-20-regular" />
+                                        }
+                                    </IconButton >
+                                </Tooltip >
+                            )
+                        }
+
+
                     </>
                 )
             }

@@ -156,7 +156,7 @@ export const RHFTextField = memo(({ name, helperText, type, viewType, label, inp
 const InputField = memo(({ field, label, size, type = 'text', inputType, onlyNumbersRegex, error, helperText, inputProps, isDebouncedQuery = false, ...other }: any) => {
 
   // console.log("🚀 ~ InputField ~ type:", type)
-  console.log("🚀 ~ error: InputField", error)
+  // console.log("🚀 ~ error: InputField", error)
 
   const ref: any = useRef<HTMLDivElement>(null);
   const [localValue, setLocalValue] = useState<any>(field.value);
