@@ -1,0 +1,1 @@
+import{j as t,H as e}from"./index-oDxpXbG-.js";function i(){return t.jsx(t.Fragment,{children:"TEST"})}const s=()=>t.jsxs(t.Fragment,{children:[t.jsx(e,{children:t.jsx("title",{children:" Email Template : Administrator"})}),t.jsx(i,{})]});export{s as default};

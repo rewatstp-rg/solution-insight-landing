@@ -13,6 +13,7 @@ import { administratorApi } from 'src/api/administrator.api';
 import { emailMarketingApi } from 'src/api/email-marketing.api';
 import { errorMiddleware } from 'src/api/middleware/error-middleware';
 import { commonApi } from 'src/api/common.api';
+import { productApi } from 'src/api/product.api';
 
 // REDUCER
 import RoleReducer from 'src/slices/role.slices';
@@ -40,7 +41,8 @@ export const store = configureStore({
         otpMessage: otpMessageReducer,
         role: RoleReducer, [roleApi.reducerPath]: roleApi.reducer,
         emailMarketing: EmailMarketingReducer, [emailMarketingApi.reducerPath]: emailMarketingApi.reducer,
-        [commonApi.reducerPath]: commonApi.reducer
+        [commonApi.reducerPath]: commonApi.reducer,
+        [productApi.reducerPath]: productApi.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({ serializableCheck: false }).concat(
@@ -54,6 +56,7 @@ export const store = configureStore({
             userApi.middleware,
             roleApi.middleware,
             emailMarketingApi.middleware,
-            commonApi.middleware
+            commonApi.middleware,
+            productApi.middleware
         ),
 });

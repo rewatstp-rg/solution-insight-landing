@@ -16,6 +16,7 @@ const ViewCommonImageFramePage = lazy(() => import('src/pages/upload-common-imag
 const UploadCommonImageFramePage = lazy(() => import('src/pages/upload-common-image-frame/upload-common-image-frame-page'));
 
 const ProductPage = lazy(() => import('src/pages/product/product.page'));
+const ProductSearchPage = lazy(() => import('src/pages/product/product-search.page'));
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +38,9 @@ export const testModuleRoutes = [
       { path: 'location', element: <GetLocationPage />, index: true },
       { path: 'upload-product', element: <UploadCommonImageFramePage />, index: true },
       { path: 'view-product', element: <ViewCommonImageFramePage />, index: true },
-      { path: 'product', element: <ProductPage />, index: true },
+      { path: 'product', element: <ProductSearchPage />, index: true },
+      { path: 'product/:type', element: <ProductPage />, index: true },
+      { path: 'product/:code/:type', element: <ProductPage />, index: true },
     ],
   },
 ];

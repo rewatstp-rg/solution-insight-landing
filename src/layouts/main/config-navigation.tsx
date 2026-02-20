@@ -13,31 +13,13 @@ const listMenuMockUp: {
   items: NavItemBaseProps[];
 }[] = [
     {
-      "subHeader": "Dashboard",
-      "subHeaderEn": "Dashboard",
+      "subHeader": "สินค้า",
+      "subHeaderEn": "สินค้า",
       "items": [
         {
-          "title": "Overview",
-          "titleEn": "Overview",
-          "path": "/dashboard/overview",
-          "icon": "ic_dashboard",
-          "view": true,
-          "add": true,
-          "update": true,
-          "inactive": true,
-          "perform": true,
-          "id": "MN034"
-        },
-      ]
-    },
-    {
-      "subHeader": "Email marketing",
-      "subHeaderEn": "Email marketing",
-      "items": [
-        {
-          "title": "Email template",
-          "titleEn": "Event",
-          "path": "/email/template",
+          "title": "ตรวจสอบสินค้า",
+          "titleEn": "ตรวจสอบสินค้า",
+          "path": "/module/product",
           "icon": "ic_file",
           "view": true,
           "add": true,
@@ -45,36 +27,6 @@ const listMenuMockUp: {
           "inactive": true,
           "perform": true,
           "id": "MN026"
-        },
-        {
-          "title": "Email transaction",
-          "titleEn": "Event",
-          "path": "/email/transaction",
-          "icon": "ic_file",
-          "view": true,
-          "add": true,
-          "update": true,
-          "inactive": true,
-          "perform": true,
-          "id": "MN027"
-        }
-      ]
-    },
-    {
-      "subHeader": "ผู้ดูแลระบบ",
-      "subHeaderEn": "System Administrator",
-      "items": [
-        {
-          "title": "ข้อมูลผู้ดูแลระบบ",
-          "titleEn": "System Administrator Information",
-          "path": "/administrator",
-          "icon": "ic_shield-user",
-          "view": true,
-          "add": true,
-          "update": true,
-          "inactive": true,
-          "perform": true,
-          "id": "MN005"
         }
       ]
     }

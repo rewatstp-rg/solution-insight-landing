@@ -14,12 +14,17 @@ import {
     Typography
 } from '@mui/material';
 
-import { ERROR_MESSAGE } from 'src/utils/constants';
-import { enqueueSnackbarErrorComponent } from 'src/utils/enqueueSnackbarComponent';
-import { base64ToBlob, fileToBase64, checkImageOrientationFromUrl } from 'src/utils/getPathImageByfile64';
+import { useRouter } from 'src/routes/hooks';
 
+import { ERROR_MESSAGE } from 'src/utils/constants';
+import { compressImage } from 'src/utils/compress-image';
+import { checkServiceResponse, PropsCheckServiceResponse } from 'src/utils/check-service-response';
+import { base64ToBlob, fileToBase64, checkImageOrientationFromUrl } from 'src/utils/getPathImageByfile64';
+import { enqueueSnackbarErrorComponent, enqueueSnackbarSuccessComponent } from 'src/utils/enqueueSnackbarComponent';
+
+import { useSaveProductMutation } from 'src/api/product.api';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { setLoadingState, selectErrorMessage } from 'src/slices/error-message.slices';
+import { setLoadingState, setDialogMessage, selectErrorMessage, setIsLoadingDailog, closeDialogMessage } from 'src/slices/error-message.slices';
 
 import Iconify from 'src/components/iconify';
 import CardCustom from 'src/components/card/card-custom';
@@ -27,6 +32,8 @@ import { useSettingsContext } from 'src/components/settings';
 import FormProvider, { Field } from 'src/components/hook-form';
 import UploadBoxNative from 'src/components/upload/upload-box-native';
 import WatermarkedImageMutipleV3 from 'src/components/water-marked-Image/water-marked-image-mutiple-v3';
+
+import { ProductModel, ProductImageModel } from 'src/types/product.type';
 
 type FileUploadModel = {
     preview?: string
@@ -41,11 +48,14 @@ const DEFAULT_IMAGE = '/assets/frame-mockup/400x600.svg';
 
 export default function Product({ code, type }: Props) {
 
+    const router = useRouter();
     const dispatch = useAppDispatch();
     const settings = useSettingsContext();
 
     const isAdd = () => type === 'add';
     const isUpdate = () => type === 'edit';
+
+    const [callSaveProduct] = useSaveProductMutation();
 
     const { loadingState } = useAppSelector(selectErrorMessage);
 
@@ -107,11 +117,85 @@ export default function Product({ code, type }: Props) {
     }, []);
 
     const onSubmit = handleSubmit(async (dataForm) => {
-        console.log(dataForm);
-        if (fileUpload && fileUpload.type.startsWith("image/")) {
-            const fileToSave = handleDownload();
-            console.log("🚀 ~ onSubmit ~ fileToSave:", fileToSave);
+        try {
+
+            const formData = new FormData();
+            const productImageModel: ProductImageModel[] = [];
+
+            if (fileUpload && fileUpload.type.startsWith("image/")) {
+                const thumbnailFile = handleDownload();
+                const originalFile = fileUpload;
+
+                if (thumbnailFile) {
+
+                    const compressedThumbnailFile = await compressImage(thumbnailFile, {
+                        quality: 0.5,
+                        type: 'image/webp',
+                    });
+
+                    const compressedOriginalFile = await compressImage(originalFile, {
+                        quality: 0.6,
+                        type: 'image/webp',
+                    });
+
+                    formData.append(compressedThumbnailFile.name, compressedThumbnailFile);
+                    formData.append(compressedOriginalFile.name, compressedOriginalFile);
+
+
+                    productImageModel.push({
+                        imageName: compressedOriginalFile.name,
+                        imageType: 'NORMAL'
+                    });
+
+                    productImageModel.push({
+                        imageName: compressedThumbnailFile.name,
+                        imageType: 'THUMBNAIL'
+                    });
+                }
+            }
+
+            const productSaveModel: ProductModel = {
+                ...dataForm,
+                listImage: productImageModel
+            };
+
+            formData.append('data', JSON.stringify(productSaveModel));
+
+            dispatch(setDialogMessage({
+                title: '',
+                message: "คุณต้องการบันทึกข้อมูลใช่หรือไม่",
+                open: true,
+                showSave: true,
+                showCancel: true,
+                labelOk: 'ตกลง',
+                labelCancel: 'ยกเลิก',
+                type: 'alert',
+                onOk: async () => {
+
+                    dispatch(setIsLoadingDailog(true));
+
+                    let dataResponse: PropsCheckServiceResponse = {} as PropsCheckServiceResponse;
+                    dataResponse = await callSaveProduct(formData).unwrap();
+
+                    if (checkServiceResponse(dataResponse)) {
+                        dispatch(setIsLoadingDailog(false));
+                        dispatch(closeDialogMessage());
+                        enqueueSnackbarSuccessComponent();
+                        router.push('/admin/module/product');
+                    } else {
+                        enqueueSnackbarErrorComponent();
+                    }
+                },
+            }));
+
+        } catch (error) {
+            dispatch(setIsLoadingDailog(false));
+            dispatch(closeDialogMessage());
+            enqueueSnackbarErrorComponent(error.message);
         }
+
+
+
     });
 
     const renderWatermarkedImage = async (file?: File, fileItem?: File, url?: string) => {
@@ -169,6 +253,10 @@ export default function Product({ code, type }: Props) {
 
     const onReset = () => {
         reset();
+        setFileUpload(null);
+        setImageUrlSelected('');
+        setImageOrientation('');
+        setIsWatermark(false);
     }
 
     return (
@@ -217,8 +305,6 @@ export default function Product({ code, type }: Props) {
                                         isWatermarked={isWatermark}
                                         imageOrientation={imageOrientation}
                                         imageUrl={imageUrlSelected ?? DEFAULT_IMAGE}
-                                        watermarkHorizontalUrl='/assets/watermark/Checkfoto-Watermark-horizontal.png'
-                                        watermarkVerticalUrl='/assets/watermark/Checkfoto-Watermark-vertical.png'
                                         canvasRef={canvasRef as React.RefObject<HTMLCanvasElement>}
                                     />
                                 </Grid>

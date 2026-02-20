@@ -186,8 +186,8 @@ export default function UploadCommonImageFrameView() {
                                 isWatermarked={isWatermark}
                                 imageOrientation={imageOrientation}
                                 imageUrl={imageUrlSelected ?? DEFAULT_IMAGE}
-                                watermarkHorizontalUrl='/assets/watermark/Checkfoto-Watermark-horizontal.png'
-                                watermarkVerticalUrl='/assets/watermark/Checkfoto-Watermark-vertical.png'
+                                // watermarkHorizontalUrl='/assets/watermark/Checkfoto-Watermark-horizontal.png'
+                                // watermarkVerticalUrl='/assets/watermark/Checkfoto-Watermark-vertical.png'
                                 canvasRef={canvasRef as React.RefObject<HTMLCanvasElement>}
                             />
 

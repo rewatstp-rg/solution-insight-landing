@@ -5,11 +5,14 @@ import {
     Stack,
     Button,
     Select,
+    Divider,
     MenuItem,
     TextField,
     InputLabel,
-    FormControl
+    FormControl,
 } from "@mui/material";
+
+import DialogSelectWaterMarked from "./dialog-select-water-marked";
 
 /* =======================
    TYPES
@@ -36,8 +39,6 @@ interface CanvasText {
 
 interface Props {
     imageUrl: string;
-    watermarkHorizontalUrl: string;
-    watermarkVerticalUrl: string;
     imageOrientation: string;
     isWatermarked?: boolean;
     canvasRef: React.RefObject<HTMLCanvasElement>;
@@ -68,17 +69,21 @@ const getCanvasPos = (
 
 const WatermarkedCanvasEditor: React.FC<Props> = ({
     imageUrl,
-    watermarkHorizontalUrl,
-    watermarkVerticalUrl,
     imageOrientation,
     isWatermarked = true,
     canvasRef,
     previewUrl
 }) => {
+
     const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
 
     const baseImageRef = useRef<HTMLImageElement | null>(null);
     const watermarkRef = useRef<HTMLImageElement | null>(null);
+
+    const [isOpenWatermarkDialog, setIsOpenWatermarkDialog] = useState(false);
+    const [selectWatermark, setSelectWatermark] = useState<string>('/assets/watermark/watermark_tilt6_black_3024x4032.png');
+    const [globalAlphaWatermark, setGlobalAlphaWatermark] = useState(0.5);
+    const [selectedText, setSelectedText] = useState<string | null>("t1");
 
     const dragRef = useRef<{
         id: string | null;
@@ -101,13 +106,12 @@ const WatermarkedCanvasEditor: React.FC<Props> = ({
         }
     ]);
 
-    const [selectedText, setSelectedText] = useState<string | null>("t1");
-
     /* =======================
        LOAD IMAGES (ONCE)
     ======================= */
 
     useEffect(() => {
+        console.log(selectWatermark);
         const canvas = canvasRef.current;
         if (!canvas) return;
 
@@ -118,6 +122,7 @@ const WatermarkedCanvasEditor: React.FC<Props> = ({
         let cancelled = false;
 
         const load = async () => {
+
             const base = new Image();
             base.crossOrigin = "anonymous";
             base.src = imageUrl;
@@ -128,8 +133,8 @@ const WatermarkedCanvasEditor: React.FC<Props> = ({
 
             const wmUrl =
                 imageOrientation === "landscape"
-                    ? watermarkHorizontalUrl
-                    : watermarkVerticalUrl;
+                    ? selectWatermark
+                    : selectWatermark;
 
             if (wmUrl) {
                 const wm = new Image();
@@ -152,7 +157,7 @@ const WatermarkedCanvasEditor: React.FC<Props> = ({
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [imageUrl, watermarkHorizontalUrl, watermarkVerticalUrl, imageOrientation]);
+    }, [imageUrl, selectWatermark, setSelectWatermark, imageOrientation]);
 
     /* =======================
        INIT CANVAS SIZE
@@ -193,8 +198,8 @@ const WatermarkedCanvasEditor: React.FC<Props> = ({
 
         // watermark
         if (isWatermarked && watermarkRef.current) {
-            ctx.globalAlpha = 0.3;
-            ctx.globalCompositeOperation = "overlay";
+            ctx.globalAlpha = globalAlphaWatermark;
+            ctx.globalCompositeOperation = "source-over";
             ctx.drawImage(
                 watermarkRef.current,
                 0,
@@ -303,7 +308,7 @@ const WatermarkedCanvasEditor: React.FC<Props> = ({
     useEffect(() => {
         scheduleRedraw();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [texts]);
+    }, [texts, globalAlphaWatermark, selectWatermark, setSelectWatermark]);
 
     /* =======================
        UI ACTIONS
@@ -347,93 +352,28 @@ const WatermarkedCanvasEditor: React.FC<Props> = ({
        RENDER
     ======================= */
 
+    const onSelectWatermark = (url: string) => {
+        setSelectWatermark(url);
+        setIsOpenWatermarkDialog(false);
+    };
+
     return (
-        <Stack spacing={2}>
-            {/* Controls */}
-            <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center" justifyContent="center">
-                <Button variant="contained" onClick={addText} size="small" sx={{ width: 100, height: 36 }}>
-                    เพิ่มข้อความ
-                </Button>
-                <Button
-                    color="error"
-                    variant="outlined"
-                    disabled={!selectedText}
-                    onClick={deleteSelectedText}
-                >
-                    ลบข้อความ
-                </Button>
-                {/* {activeText && (
-                    <>
-                        <TextField
-                            size="small"
-                            label="Text"
-                            sx={{ width: 300 }}
-                            value={activeText.text}
-                            onChange={e =>
-                                updateActive({ text: e.target.value })
-                            }
-                        />
-                        <FormControl size="small" sx={{ minWidth: 200 }}>
-                            <InputLabel>Font</InputLabel>
-                            <Select
-                                label="Font"
-                                value={activeText.fontFamily}
-                                onChange={(e) =>
-                                    updateActive({
-                                        fontFamily: e.target.value
-                                    })
-                                }
-                            >
-                                {THAI_FONTS.map(font => (
-                                    <MenuItem
-                                        key={font.value}
-                                        value={font.value}
-                                        sx={{ fontFamily: font.value }}
-                                    >
-                                        {font.label}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <TextField
-                            size="small"
-                            type="number"
-                            label="Size"
-                            sx={{ width: 70 }}
-                            value={activeText.fontSize}
-                            onChange={e =>
-                                updateActive({
-                                    fontSize: Number(e.target.value)
-                                })
-                            }
-                        />
-                        <Select
-                            size="small"
-                            value={activeText.fontWeight}
-                            onChange={(e) =>
-                                updateActive({ fontWeight: e.target.value as number })
-                            }
-                        >
-                            <MenuItem value={300}>Light</MenuItem>
-                            <MenuItem value={400}>Regular</MenuItem>
-                            <MenuItem value={500}>Medium</MenuItem>
-                            <MenuItem value={600}>Semi Bold</MenuItem>
-                            <MenuItem value={700}>Bold</MenuItem>
-                            <MenuItem value={800}>Extra Bold</MenuItem>
-                        </Select>
-                        <Box>
-                            <input
-                                type="color"
-                                style={{ width: 60, height: 38 }}
-                                value={activeText.color}
-                                onChange={e =>
-                                    updateActive({ color: e.target.value })
-                                }
-                            />
-                        </Box>
-                    </>
-                )} */}
-                <>
+        <>
+            <Stack spacing={2}>
+                {/* Controls */}
+                <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center" justifyContent="flex-start">
+                    <Button variant="contained" onClick={addText} size="small" sx={{ width: 100, height: 36 }}>
+                        เพิ่มข้อความ
+                    </Button>
+                    <Button
+                        color="error"
+                        variant="outlined"
+                        disabled={!selectedText}
+                        onClick={deleteSelectedText}
+                    >
+                        ลบข้อความ
+                    </Button>
+
                     <TextField
                         size="small"
                         label="Text"
@@ -480,6 +420,7 @@ const WatermarkedCanvasEditor: React.FC<Props> = ({
                     <FormControl size="small" sx={{ minWidth: 200 }}>
                         <InputLabel>Font Weight</InputLabel>
                         <Select
+                            label="Font Weight"
                             size="small"
                             value={activeText?.fontWeight || 400}
                             onChange={(e) =>
@@ -494,6 +435,7 @@ const WatermarkedCanvasEditor: React.FC<Props> = ({
                             <MenuItem value={800}>Extra Bold</MenuItem>
                         </Select>
                     </FormControl>
+
                     <Box>
                         <input
                             type="color"
@@ -504,51 +446,75 @@ const WatermarkedCanvasEditor: React.FC<Props> = ({
                             }
                         />
                     </Box>
-                </>
-            </Stack>
 
-            {/* Canvas */}
-            <Box sx={{ display: 'flex', justifyContent: 'center', gap: { xs: 3, md: 6, lg: 10 } }}>
-                <Box
-                    sx={{
-                        width: 1,
-                        maxWidth: imageOrientation === 'landscape' ? '700px' : '400px'
-                    }}
-                >
+                </Stack>
+                <Divider sx={{ borderStyle: 'dashed', mt: 0.5, mb: 0.5 }} />
+                <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center" justifyContent="flex-start">
+                    <Button variant="contained" onClick={() => setIsOpenWatermarkDialog(true)} size="small" sx={{ width: 200, height: 36 }}>
+                        เลือก Watermark
+                    </Button>
+                    <FormControl size="small" sx={{ minWidth: 200 }}>
+                        <InputLabel>Opacity Watermark</InputLabel>
+                        <Select
+                            label="Opacity Watermark"
+                            size="small"
+                            value={globalAlphaWatermark || 0.5}
+                            onChange={(e) =>
+                                setGlobalAlphaWatermark(e.target.value as number)
+                            }
+                        >
+                            <MenuItem value={0.3}>น้อย</MenuItem>
+                            <MenuItem value={0.5}>ปานกลาง</MenuItem>
+                            <MenuItem value={0.7}>มาก</MenuItem>
+                            <MenuItem value={1}>เต็ม</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Stack>
+
+                {/* Canvas */}
+                <Box sx={{ display: 'flex', justifyContent: 'center', gap: { xs: 3, md: 6, lg: 10 } }}>
                     <Box
-                        component="img"
-                        src={previewUrl}
-                        alt="preview"
                         sx={{
-                            width: '100%',
-                            height: 'auto',
-                            borderRadius: 2,
-                            display: 'block',
+                            width: 1,
+                            maxWidth: imageOrientation === 'landscape' ? '700px' : '400px'
                         }}
-                    />
-                </Box>
-                <Box
-                    sx={{
-                        width: 1,
-                        maxWidth:
-                            imageOrientation === "landscape"
-                                ? "700px"
-                                : "400px"
-                    }}
-                >
-                    <canvas
-                        ref={canvasRef}
-                        style={{
-                            width: "100%",
-                            borderRadius: 16,
-                            cursor: "move",
-                            userSelect: "none"
+                    >
+                        <Box
+                            component="img"
+                            src={previewUrl}
+                            alt="preview"
+                            sx={{
+                                width: '100%',
+                                height: 'auto',
+                                borderRadius: 2,
+                                display: 'block',
+                            }}
+                        />
+                    </Box>
+                    <Box
+                        sx={{
+                            width: 1,
+                            maxWidth:
+                                imageOrientation === "landscape"
+                                    ? "700px"
+                                    : "400px"
                         }}
-                    />
+                    >
+                        <canvas
+                            ref={canvasRef}
+                            style={{
+                                width: "100%",
+                                borderRadius: 16,
+                                cursor: "move",
+                                userSelect: "none"
+                            }}
+                        />
+                    </Box>
                 </Box>
-            </Box>
+            </Stack>
+            <DialogSelectWaterMarked open={isOpenWatermarkDialog} onSubmit={onSelectWatermark} />
+        </>
 
-        </Stack>
     );
 };
 

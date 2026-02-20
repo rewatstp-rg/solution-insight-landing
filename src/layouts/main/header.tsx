@@ -1,5 +1,4 @@
 /* eslint-disable perfectionist/sort-imports */
-import { useEffect } from 'react';
 
 import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
@@ -12,8 +11,6 @@ import { useResponsive } from 'src/hooks/use-responsive';
 
 import { bgBlur } from 'src/theme/css';
 
-import { useListAllMenuMutation } from 'src/api/menu.api';
-
 import Logo from 'src/components/logo';
 import SvgColor from 'src/components/svg-color';
 import { useSettingsContext } from 'src/components/settings';
@@ -23,7 +20,7 @@ import FullScreenOption from 'src/components/settings/drawer/fullscreen-option';
 import { NAV, HEADER } from '../config-layout';
 import ProfileName from '../common/profile-name';
 import AccountPopover from '../common/account-popover';
-import NotificationsPopover from '../common/notifications-popover';
+// import NotificationsPopover from '../common/notifications-popover';
 
 // ----------------------------------------------------------------------
 
@@ -35,8 +32,6 @@ export default function Header({ onOpenNav }: Props) {
   const theme = useTheme();
 
   const settings = useSettingsContext();
-
-  const [getAllMenu] = useListAllMenuMutation();
 
   const isNavHorizontal = settings.themeLayout === 'horizontal';
 
@@ -81,7 +76,7 @@ export default function Header({ onOpenNav }: Props) {
       >
         {/* <LanguagePopover /> */}
 
-        <NotificationsPopover />
+        {/* <NotificationsPopover /> */}
 
         {/* <ContactsPopover /> */}
 
@@ -95,16 +90,6 @@ export default function Header({ onOpenNav }: Props) {
       </Stack>
     </>
   );
-
-  const loadMenu = async () => {
-    await getAllMenu();
-  }
-
-
-  useEffect(() => {
-    loadMenu();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <AppBar

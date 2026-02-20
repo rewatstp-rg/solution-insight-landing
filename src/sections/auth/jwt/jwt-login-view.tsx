@@ -15,42 +15,45 @@ import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import axios, { endpoints } from 'src/utils/axios';
-
 import { RouterLink } from 'src/routes/components';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 import { setStorage } from 'src/hooks/use-local-storage';
 
-import { AUTH_TYPE, STORAGE_KEYS, AUTH_INVALID_MESSAGE } from 'src/utils/constants';
+import { STORAGE_KEYS } from 'src/utils/constants';
+import { generateMockToken } from 'src/utils/mock-token';
 
-import { useAppDispatch } from 'src/store/hooks';
 import { setSession } from 'src/auth/context/jwt/utils';
-import { setUserProfile, setAccessToken, setTokenProfile } from 'src/slices/otp.slices';
 
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 
 // ----------------------------------------------------------------------
+// 🔐 FIXED AUTH CONFIG
+const FIXED_AUTH = {
+  username: 'admin',
+  password: '1234',
+};
+
+// ----------------------------------------------------------------------
 
 export default function JwtLoginView() {
-
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
   const returnTo = searchParams.get('returnTo');
+
+  const { enqueueSnackbar } = useSnackbar();
+  const isPassword = useBoolean();
 
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { enqueueSnackbar } = useSnackbar();
-
-  const password = useBoolean();
-
+  // ----------------------------------------------------------------------
+  // VALIDATION
   const LoginSchema = Yup.object().shape({
-    username: Yup.string().required('กรุณาระบุ'),
-    password: Yup.string().required('กรุณาระบุ'),
+    username: Yup.string().required('กรุณาระบุชื่อผู้ใช้งาน'),
+    password: Yup.string().required('กรุณาระบุรหัสผ่าน'),
   });
 
   const defaultValues = {
@@ -63,69 +66,63 @@ export default function JwtLoginView() {
     defaultValues,
   });
 
-  const {
-    reset,
-    handleSubmit
-  } = methods;
+  const { reset, handleSubmit } = methods;
 
-  const onSubmit = handleSubmit(async (dataValue) => {
+  // ----------------------------------------------------------------------
+  // SUBMIT
+  const onSubmit = handleSubmit(async (data) => {
     try {
       setLoading(true);
-      const formValue = dataValue;
+      setErrorMsg('');
 
-      const url = endpoints.auth.login;
+      const { username, password } = data;
 
-      const res = await axios.post(url, formValue);
-      const { data, status } = res.data;
+      // FIXED AUTH CHECK
+      const isValid =
+        username === FIXED_AUTH.username &&
+        password === FIXED_AUTH.password;
 
-      if (status.description === "SUCCESS" && data.accessToken) {
-        dispatch(setUserProfile({ ...formValue }));
-        if (res?.data?.data?.status === AUTH_TYPE.NEW_USER) {
-
-          axios.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
-
-          dispatch(setTokenProfile(data));
-          dispatch(setAccessToken(data?.accessToken));
-
-          router.push('/new-password');
-
-        } else if (res?.data?.data?.status === AUTH_TYPE.ACTIVE) {
-
-          // console.log("🚀 ~ file: jwt-login-view.tsx:75 ~ onSubmit ~ data:", data)
-
-          const key = STORAGE_KEYS.USER_INFO;
-
-          setSession(data?.accessToken);
-          setStorage(key, data);
-
-          axios.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
-
-          const urlDashboard = '/admin/dashboard/overview';
-          // console.log("🚀 ~ file: jwt-login-view.tsx:96 ~ setTimeout ~ returnTo:", returnTo)
-
-          setTimeout(() => {
-            enqueueSnackbar("ยินดีต้อนรับเข้าสู่ระบบ", {
-              variant: 'success',
-            });
-
-            router.push(returnTo || urlDashboard);
-            setLoading(false);
-          }, 1500);
-        }
-
-      } else {
+      if (!isValid) {
         setLoading(false);
-        setErrorMsg(AUTH_INVALID_MESSAGE[status.description]);
+        setErrorMsg('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง');
+        return;
       }
 
+      // MOCK SESSION / TOKEN
+
+      const mockToken = generateMockToken({
+        id: 1,
+        username: 'admin',
+        adminCode: 'ADM-001',
+        email: 'admin@company.com',
+        firstname: 'Admin',
+        lastname: 'System',
+        fullName: 'Admin System',
+        status: 'ACTIVE',
+      });
+
+      setSession(mockToken);
+
+      setStorage(STORAGE_KEYS.USER_INFO, mockToken);
+
+      enqueueSnackbar('ยินดีต้อนรับเข้าสู่ระบบ', {
+        variant: 'success',
+      });
+
+      setTimeout(() => {
+        router.push(returnTo || '/admin');
+        setLoading(false);
+      }, 800);
     } catch (error) {
-      setLoading(false);
       console.error(error);
+      setLoading(false);
       reset();
-      setErrorMsg(typeof error === 'string' ? error : error.message);
+      setErrorMsg('เกิดข้อผิดพลาด กรุณาลองใหม่');
     }
   });
 
+  // ----------------------------------------------------------------------
+  // RENDER
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 3 }}>
       <Typography variant="h4">Sign in to Administrator</Typography>
@@ -134,25 +131,42 @@ export default function JwtLoginView() {
 
   const renderForm = (
     <Stack spacing={2.5}>
-      <RHFTextField name="username" label="ชื่อผู้ใช้งาน" placeholder='ชื่อผู้ใช้งาน' />
+      <RHFTextField
+        name="username"
+        label="ชื่อผู้ใช้งาน"
+        placeholder="ชื่อผู้ใช้งาน"
+      />
 
       <RHFTextField
         name="password"
         label="รหัสผ่าน"
-        placeholder='รหัสผ่าน'
-        type={password.value ? 'text' : 'password'}
+        placeholder="รหัสผ่าน"
+        type={isPassword.value ? 'text' : 'password'}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={password.onToggle} edge="end">
-                <Iconify icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+              <IconButton onClick={isPassword.onToggle} edge="end">
+                <Iconify
+                  icon={
+                    isPassword.value
+                      ? 'solar:eye-bold'
+                      : 'solar:eye-closed-bold'
+                  }
+                />
               </IconButton>
             </InputAdornment>
           ),
         }}
       />
 
-      <Link variant="body2" color="inherit" component={RouterLink} href="/forgot-password" underline="always" sx={{ alignSelf: 'flex-end', fontSize: '0.935rem', cursor: 'pointer' }}>
+      <Link
+        variant="body2"
+        color="inherit"
+        component={RouterLink}
+        href="/forgot-password"
+        underline="always"
+        sx={{ alignSelf: 'flex-end', fontSize: '0.935rem' }}
+      >
         ลืมรหัสผ่าน ?
       </Link>
 
@@ -171,13 +185,12 @@ export default function JwtLoginView() {
 
   return (
     <Box sx={{ maxWidth: 450, position: 'relative' }}>
-      <Typography variant="h3" sx={{ textAlign: 'center', position: 'relative', top: -200 }}>
-        {/* <img src="/assets/logo/Solution-Insight.png" alt="logo" width={300} style={{ textAlign: 'center' }} /> */}
-      </Typography>
+      <Typography
+        variant="h3"
+        sx={{ textAlign: 'center', position: 'relative', top: -200 }}
+      />
 
-      <Page>
-        {renderHead}
-      </Page>
+      <Page>{renderHead}</Page>
 
       {!!errorMsg && (
         <Alert severity="error" sx={{ mb: 3 }}>
@@ -192,9 +205,10 @@ export default function JwtLoginView() {
   );
 }
 
-const Page = styled.div` 
-@media screen and (min-width: 900px) {
-  margin-top: -125px;
-}
-  
-`
+// ----------------------------------------------------------------------
+
+const Page = styled.div`
+  @media screen and (min-width: 900px) {
+    margin-top: -125px;
+  }
+`;

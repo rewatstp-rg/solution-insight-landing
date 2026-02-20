@@ -1,0 +1,1 @@
+import{j as n,m as s}from"./index-oDxpXbG-.js";import{L as r}from"./LoadingButton-cTSeMeCc.js";const m=o=>{const{addLabel:t="เพิ่ม",onAdd:i,loading:a=!1,...d}=o;return n.jsx(r,{sx:{minWidth:100},variant:"contained",loading:a,onClick:i,startIcon:n.jsx(s,{icon:"mingcute:add-line"}),...d,children:t})};export{m as B};

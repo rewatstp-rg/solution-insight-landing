@@ -33,7 +33,7 @@ function Container({ children }: Props) {
   const [checked, setChecked] = useState(false);
 
   const check = useCallback(() => {
-    if (!accessTokenOption?.accessToken) {
+    if (!accessTokenOption) {
       const searchParams = new URLSearchParams({
         returnTo: window.location.pathname,
       }).toString();

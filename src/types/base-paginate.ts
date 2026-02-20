@@ -1,6 +1,8 @@
 export type BasePaginateRequest = {
-  pageNo?: number
-  pageSize?: number
+  pageNo?: number;
+  pageSize?: number;
+  sortBy?: string;
+  orderType?: string;
 }
 
 export type BasePaginateResponse<T> = {

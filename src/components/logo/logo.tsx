@@ -25,20 +25,20 @@ const Logo = forwardRef<HTMLDivElement, LogoProps>(
         ref={ref}
         component="div"
         sx={isMini ? {
-          width: 65,
+          width: 64,
           height: 'auto',
           display: 'inline-flex',
           ...sx,
         } : {
-          width: 150,
+          width: 1,
           height: 'auto',
-          margin: '24px auto auto !important',
+          margin: '0px auto auto !important',
           display: 'inline-flex',
           ...sx,
         }}
         {...other}
       >
-        <img src="/assets/logo/Solution-Insight.png" alt="logo" />
+        <img src={isMini ? "/assets/logo/tractor-logo.jpg" : "/assets/logo/logo_horizontal_280x60.png"} alt="logo" />
       </Box>
     );
 

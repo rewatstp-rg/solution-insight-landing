@@ -317,6 +317,14 @@ export const endpoints = {
     searchImageFrameByType: 'searchImageFrameByType',
 
   },
+  product : {
+    root: '/api/app/productController/',
+    saveProduct: 'saveProduct',
+    searchProduct: 'search',
+    getProduct: 'getProduct',
+    deleteProduct: 'deleteProduct',
+    updateProduct: 'updateProduct'
+  },
 };
 
 export const endpointsCustomer = {

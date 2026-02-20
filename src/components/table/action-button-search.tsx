@@ -218,22 +218,27 @@ export default function ActionButtonSearch({ onEdit, onInquiry, onDelete, viewTy
                         }
                         {
                             onDownloadXml && (
-                                <Tooltip title="Download XML" placement="top" arrow>
+                                <Tooltip title="Download Original" placement="top" arrow>
                                     <IconButton color={quickDownloadXml.value ? 'inherit' : 'default'} onClick={handleDownloadXml} sx={{ color: theme.palette.grey[500] }}>
-                                        <Iconify icon="mdi:file-xml-box" />
+                                         {
+                                            loading && <CircularProgress color="inherit" size={24} />
+                                        }
+                                        {
+                                            !loading && <Iconify icon="solar:download-bold" />
+                                        }
                                     </IconButton>
                                 </Tooltip>
                             )
                         }
                         {
                             onDownloadPdf && (
-                                <Tooltip title="Download PDF" placement="top" arrow>
+                                <Tooltip title="Download Thumbnail" placement="top" arrow>
                                     <IconButton color={quickDownloadPdf.value ? 'inherit' : 'default'} onClick={handleDownloadPdf} sx={{ color: theme.palette.grey[500] }}>
                                         {
                                             loading && <CircularProgress color="inherit" size={24} />
                                         }
                                         {
-                                            !loading && <Iconify icon="carbon:generate-pdf" />
+                                            !loading && <Iconify icon="solar:download-bold" />
                                         }
                                     </IconButton>
                                 </Tooltip>
