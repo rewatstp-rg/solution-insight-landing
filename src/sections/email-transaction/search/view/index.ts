@@ -1,1 +1,0 @@
-export { default as EmailTransactionSearchView } from './email-transaction-view';

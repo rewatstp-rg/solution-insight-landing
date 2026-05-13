@@ -1,1 +1,0 @@
-export { default as AdminFormView } from './admin-form-view';

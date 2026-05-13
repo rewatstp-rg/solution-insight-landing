@@ -1,1 +1,0 @@
-export { default as GetLocationView } from './get-location-view';

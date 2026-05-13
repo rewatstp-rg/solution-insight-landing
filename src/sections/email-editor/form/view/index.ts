@@ -1,1 +1,0 @@
-export { default as EmailEditorView } from './email-editor-view';

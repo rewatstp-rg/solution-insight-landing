@@ -1,1 +1,0 @@
-export { default as EmailTemplateSearchView } from './email-template-search-view';

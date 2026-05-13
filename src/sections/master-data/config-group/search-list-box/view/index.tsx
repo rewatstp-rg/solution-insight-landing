@@ -1,1 +1,0 @@
-export { default as ConfigGroupSearchListBoxView } from './config-group-search-list-box-view';

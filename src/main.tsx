@@ -1,22 +1,10 @@
-import { Suspense } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
 
-/* eslint-disable perfectionist/sort-imports */
 import App from './App';
 
-/* eslint-disable perfectionist/sort-imports */
-// import './index.css';
-
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-
-root.render(
-  <HelmetProvider>
-    <BrowserRouter>
-      <Suspense>
-        <App />
-      </Suspense>
-    </BrowserRouter>
-  </HelmetProvider>
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );

@@ -1,1 +1,0 @@
-export { default as HistoryCommentView } from './history-comment.view';

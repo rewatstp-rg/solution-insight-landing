@@ -191,7 +191,7 @@ export default function CompanyLanding() {
         </a>
         <nav className="si-nav" aria-label="Primary navigation">
           {navItems.map((item) => (
-            <a href={`#${item.toLowerCase().replaceAll(' ', '-')}`} key={item}>
+            <a href={`#${item.toLowerCase().replace(/\s+/g, '-')}`} key={item}>
               {item}
             </a>
           ))}

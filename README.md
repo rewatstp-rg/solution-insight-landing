@@ -1,29 +1,21 @@
-## NODE.JS
-- Node 16.x || 18.x
+# Solution Insight Landing Page
 
-## USING YARN (Recommend)
-- yarn install
-- yarn admin 
-- npm/yarn install vite
+React + TypeScript landing page for Solution Insight, based on the supplied company profile deck.
 
-## USING NPM
-- npm i OR npm i --legacy-peer-deps
-- npm run dev
+## Scripts
 
-## HOW TO START
- 1. run scirpt in terminal => yarn admin
- 2. follow to http://localhost:3600/
- 3. if you change path API you can change it at .env.admin-dev => VITE_HOST_API
+```bash
+npm install
+npm run dev
+npm run build
+npm run preview
+```
 
-## HOW TO BUILD
- 1. change package version in package.json is new version > old version  For example "version": "1.0.3" (Old) change to "version": "1.0.4" (New)
- 2. run scirpt in terminal 
-    - yarn build:admin-sit for DEV web
-    - yarn build:admin-uat for PROD web
+The local preview runs at [http://localhost:3800](http://localhost:3800).
 
-## แก้ไข Url Env sit ( yarn build:admin-sit )
- - เข้าไปที่ไฟล์ .env.admin-sit เปลี่ยน VITE_HOST_API='...'
+## Stack
 
-## eslint
-eslint off 
-/* eslint import/newline-after-import: "off" */
+- React
+- TypeScript
+- Vite
+- Three.js
