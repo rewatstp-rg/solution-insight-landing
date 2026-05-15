@@ -6,12 +6,12 @@ const asset = (name: string) => `/solution-insight/${name}`;
 const navItems = ['About Us', 'Services', 'Skills', 'Team', 'Partner', 'Our Client', 'Contact Us'];
 
 const services = [
-  ['Back-Office Development', 'Robust systems that streamline operations and improve productivity.'],
-  ['Workflow Management', 'Automate business processes with smart workflows made for your team.'],
-  ['Bank Reconciliation', 'Accurate financial reconciliation for confident payment operations.'],
-  ['Data Dashboard', 'Real-time dashboards and reports that turn data into decisions.'],
-  ['Internal Workflow', 'Optimize internal processes and improve collaboration across departments.'],
-  ['Custom Software Solutions', 'Tailored software built around your business challenge.'],
+  ['Back-Office Development', 'Robust back-office systems that streamline operations and improve productivity.', 'browser'],
+  ['Workflow Management', 'Automate and manage business processes efficiently with smart workflows.', 'workflow'],
+  ['Bank Reconciliation', 'Accurate and automated bank reconciliation for complete financial confidence.', 'bank'],
+  ['Data Dashboard', 'Real-time dashboards and reports that turn data into actionable insights.', 'chart'],
+  ['Internal Workflow', 'Optimize internal processes and enhance team collaboration seamlessly.', 'nodes'],
+  ['Custom Software Solutions', 'Tailored software built to solve your unique business challenges.', 'cube'],
 ];
 
 const technologies = [
@@ -30,10 +30,81 @@ const technologies = [
 ];
 
 const team = [
-  ['9+ Years', 'Software Business Solution Consultant & Development'],
-  ['4+ Years', 'Front End Developer & UX/UI Design'],
-  ['3+ Years', 'Backend Developer & API Integration Expert'],
+  ['9+ Years', 'Software Business Solution Consultant & Development', 'concept/team-1.png'],
+  ['4+ Years', 'Front End Developer & UX/UI Design', 'concept/team-2.png'],
+  ['3+ Years', 'Backend Developer & API Integration Expert', 'concept/team-3.png'],
 ];
+
+type ServiceIconProps = {
+  type: string;
+};
+
+function ServiceIcon({ type }: ServiceIconProps) {
+  const common = {
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+    strokeWidth: 2.3,
+  };
+
+  if (type === 'browser') {
+    return (
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="12" y="15" width="40" height="34" rx="3" {...common} />
+        <path d="M12 24h40M20 20h.1M26 20h.1" {...common} />
+        <path d="M22 35h10M22 41h20" {...common} />
+      </svg>
+    );
+  }
+
+  if (type === 'workflow') {
+    return (
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="11" y="12" width="15" height="15" rx="3" {...common} />
+        <rect x="38" y="12" width="15" height="15" rx="3" {...common} />
+        <rect x="11" y="38" width="15" height="15" rx="3" {...common} />
+        <rect x="38" y="38" width="15" height="15" rx="3" {...common} />
+        <path d="M26 20h12M19 27v11M45 27v11M26 46h12" {...common} />
+      </svg>
+    );
+  }
+
+  if (type === 'bank') {
+    return (
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M10 25h44L32 12 10 25ZM16 25v24M26 25v24M38 25v24M48 25v24M12 49h40" {...common} />
+      </svg>
+    );
+  }
+
+  if (type === 'chart') {
+    return (
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M31 12a20 20 0 1 0 20 20H31V12Z" {...common} />
+        <path d="M38 11v14h14A18 18 0 0 0 38 11Z" fill="currentColor" stroke="none" />
+      </svg>
+    );
+  }
+
+  if (type === 'nodes') {
+    return (
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="26" y="10" width="12" height="12" rx="2" {...common} />
+        <rect x="10" y="42" width="12" height="12" rx="2" {...common} />
+        <rect x="42" y="42" width="12" height="12" rx="2" {...common} />
+        <path d="M32 22v10M16 42V32h32v10" {...common} />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <path d="m32 10 20 11v22L32 54 12 43V21l20-11Z" {...common} />
+      <path d="M12 21 32 32l20-11M32 32v22" {...common} />
+    </svg>
+  );
+}
 
 function CodeCanvas3D() {
   const mountRef = useRef<HTMLDivElement | null>(null);
@@ -47,7 +118,7 @@ function CodeCanvas3D() {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, mount.clientWidth / mount.clientHeight, 0.1, 100);
-    camera.position.set(0, 0.62, 6.3);
+    camera.position.set(0, 0.52, 7.7);
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -55,7 +126,7 @@ function CodeCanvas3D() {
     mount.appendChild(renderer.domElement);
 
     const root = new THREE.Group();
-    root.scale.setScalar(1.08);
+    root.scale.setScalar(0.92);
     scene.add(root);
 
     const makePanelTexture = (title: string, color: string) => {
@@ -250,9 +321,11 @@ export default function CompanyLanding() {
         <p className="si-section-label si-centered">Our Services</p>
         <h2 className="si-centered">Software built around business operations.</h2>
         <div className="si-service-grid">
-          {services.map(([title, description]) => (
+          {services.map(([title, description, icon]) => (
             <article className="si-service-card" key={title}>
-              <span className="si-service-icon" />
+              <span className="si-service-icon">
+                <ServiceIcon type={icon} />
+              </span>
               <h3>{title}</h3>
               <p>{description}</p>
             </article>
@@ -276,9 +349,9 @@ export default function CompanyLanding() {
       <section className="si-section si-trust-grid">
         <div className="si-team-panel" id="team">
           <p className="si-section-label">Our Team</p>
-          {team.map(([years, description], index) => (
+          {team.map(([years, description, image]) => (
             <div className="si-team-row" key={years}>
-              <span>{index + 1}</span>
+              <img src={asset(image)} alt="" />
               <div>
                 <h3>{years}</h3>
                 <p>{description}</p>
@@ -289,26 +362,53 @@ export default function CompanyLanding() {
 
         <div className="si-partner-panel" id="partner">
           <p className="si-section-label">Partner & Security</p>
-          <img src={asset('cyberinno-logo.jpg')} alt="CyberInno" className="si-partner-logo" />
-          <h3>CyberInno Co., Ltd.</h3>
-          <p>&quot;Next Generation of Innovative Cybersecurity for Resilience of your Business&quot;</p>
+          <div className="si-partner-heading">
+            <img src={asset('cyberinno-logo.jpg')} alt="CyberInno" className="si-partner-logo" />
+            <div>
+              <h3>CyberInno Co., Ltd.</h3>
+              <p>Cybersecurity partner for resilient business systems.</p>
+            </div>
+          </div>
+          <div className="si-security-tags" aria-label="Security capabilities">
+            <span>ISO/IEC 27001</span>
+            <span>ISO/IEC 27701</span>
+            <span>PDPA</span>
+          </div>
           <ul>
-            <li>ISO/IEC 27001, ISO/IEC 27701 (PDPA)</li>
-            <li>Penetration Testing</li>
-            <li>Vulnerability Assessment (VA)</li>
-            <li>Security Baseline & Hardening</li>
+            <li>Penetration testing before release</li>
+            <li>Vulnerability assessment and remediation</li>
+            <li>Security baseline and hardening review</li>
           </ul>
-          <span className="si-shield" aria-hidden="true" />
+          <img src={asset('security-shield.svg')} alt="" className="si-shield" />
         </div>
 
         <div className="si-client-panel" id="our-client">
           <p className="si-section-label">Our Client - 2025</p>
-          <h3>Checkrace</h3>
+          <img src={asset('checkrace-case.png')} alt="Checkrace" className="si-checkrace-logo" />
           <p>
             Developed a registration and data management system for running events, with payment gateway
             and thermal slip support for payment processing and product receipt management.
           </p>
-          <img src={asset('checkrace-case.png')} alt="Checkrace platform case study" />
+          <div className="si-client-metrics" aria-label="Checkrace solution highlights">
+            <span>Registration</span>
+            <span>Payments</span>
+            <span>Thermal slips</span>
+          </div>
+          <div className="si-client-preview" aria-hidden="true">
+            <div className="si-preview-window">
+              <div className="si-preview-toolbar" />
+              <div className="si-preview-grid">
+                <span />
+                <span />
+                <span />
+                <span />
+              </div>
+            </div>
+            <div className="si-preview-phone">
+              <span />
+              <strong>QR</strong>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -318,24 +418,47 @@ export default function CompanyLanding() {
           <h2>Let&apos;s build something great together.</h2>
         </div>
         <address>
+          <span className="si-contact-icon">●</span>
           <strong>Mailing Address</strong>
           197/14 Village No. 13, Soi Suksawat Niwet 1, Suksawat Road, Nai Khlong Bang Plakot
           Subdistrict, Phra Samut Chedi District, Samut Prakan Province 10290
         </address>
         <a href="mailto:atiwat.k@solutioninsight.tech">
+          <span className="si-contact-icon">✉</span>
           <strong>Email Address</strong>
           atiwat.k@solutioninsight.tech
         </a>
         <a href="tel:0889023466">
+          <span className="si-contact-icon">☎</span>
           <strong>Phone Number</strong>
           088-902-3466
         </a>
       </section>
 
       <footer className="si-footer">
-        <img src={asset('solution-insight-logo.png')} alt="Solution Insight" />
-        <p>Custom software development company delivering secure, scalable solutions for your business.</p>
-        <span>© 2025 Solution Insight Co., Ltd. All rights reserved.</span>
+        <div className="si-footer-brand">
+          <img src={asset('footer-logo-white.png')} alt="Solution Insight" />
+          <p>Custom software development company delivering modern, secure and scalable solutions for businesses.</p>
+        </div>
+        <div className="si-footer-links">
+          <h3>Quick Links</h3>
+          <div>
+            {navItems.map((item) => (
+              <a href={`#${item.toLowerCase().replace(/\s+/g, '-')}`} key={item}>
+                {item}
+              </a>
+            ))}
+          </div>
+        </div>
+        <div className="si-footer-social">
+          <h3>Follow Us</h3>
+          <div>
+            <a href="#contact-us" aria-label="LinkedIn">in</a>
+            <a href="#contact-us" aria-label="Facebook">f</a>
+            <a href="mailto:atiwat.k@solutioninsight.tech" aria-label="Email">✉</a>
+          </div>
+        </div>
+        <span className="si-copyright">© 2025 Solution Insight Co., Ltd. All rights reserved.</span>
       </footer>
     </main>
   );
